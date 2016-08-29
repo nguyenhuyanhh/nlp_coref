@@ -37,7 +37,7 @@ def corpus_normalize(old_path, new_path, server):
 					text_in = f_in.read()
 					print(file_in_path) # debugging
 					text_clean = clean.clean(text_in)
-					if (text_clean == ''):
+					if (text_clean == ''): # cannot normalize empty text
 						f_out.write('')
 					else:
 						f_out.write(clean.remove_multiple_whitespace(process.normalize(text_clean,server)))
