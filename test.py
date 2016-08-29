@@ -5,6 +5,8 @@ import process
 import corpus
 import clean
 
+nlp = process.initialize()
+
 start_time = time.clock()
 
 # clean the corpus
@@ -13,9 +15,10 @@ start_time = time.clock()
 # corpus.corpus_clean(path_in,path_out)
 
 # normalize the corpus
-nlp = process.initialize()
-path_in = '/home/nhanh/TDT2_top20'
-path_out = '/home/nhanh/TDT2_top20_coref'
-corpus.corpus_normalize(path_in,path_out,nlp)
+path_in = '/home/nhanh/test'
+path_out = '/home/nhanh/test_coref'
+corpus.corpus_normalize_m(path_in,path_out,nlp)
 
-print(time.clock() - start_time)
+end_time = time.clock()
+
+print(end_time - start_time)
