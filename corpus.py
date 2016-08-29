@@ -26,11 +26,11 @@ def corpus_clean(old_path,new_path):
 def corpus_normalize(old_path, new_path, server):
 	if (isinstance(server,StanfordCoreNLP)):
 		for root, dirs, files in os.walk(old_path):
-			# mirror dir structure 
-			root_out = root.replace(old_path,new_path,1)
-			os.mkdir(root_out)
-
 			for f in files:
+				# mirror dir structure 
+				root_out = root.replace(old_path,new_path,1)
+				if (not os.path.isdir(root_out)):
+					os.mkdir(root_out)
 				file_in_path = os.path.join(root,f)
 				file_out_path = os.path.join(root_out,f)
 				with open(file_in_path,'r') as f_in, open(file_out_path,'w') as f_out:
