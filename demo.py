@@ -17,7 +17,7 @@ start_time = time.time()
 # normalize the corpus
 path_in = '/home/nhanh/test'
 path_out = '/home/nhanh/test_coref'
-corpus.corpus_normalize_m(path_in,path_out,nlp)
+corpus.corpus_normalize(path_in,path_out,nlp)
 
 end_time = time.time()
 
