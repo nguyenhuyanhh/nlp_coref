@@ -1,11 +1,11 @@
 # demo script
 import time
 
-import process
+from process import Process
 import corpus
 import clean
 
-nlp = process.initialize()
+p = Process()
 
 start_time = time.time()
 
@@ -15,9 +15,9 @@ start_time = time.time()
 # corpus.corpus_clean(path_in,path_out)
 
 # normalize the corpus
-path_in = '/home/nhanh/test'
-path_out = '/home/nhanh/test_coref'
-corpus.corpus_normalize(path_in,path_out,nlp)
+# path_in = '/home/nhanh/test'
+# path_out = '/home/nhanh/test_coref'
+# corpus.corpus_normalize(path_in,path_out,nlp)
 
 end_time = time.time()
 
