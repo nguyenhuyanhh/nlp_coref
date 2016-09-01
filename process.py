@@ -1,4 +1,3 @@
-import re
 import json
 
 from pycorenlp import StanfordCoreNLP

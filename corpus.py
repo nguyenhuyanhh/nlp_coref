@@ -1,31 +1,15 @@
 import os
-import re
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 
-from pycorenlp import StanfordCoreNLP
-
-import process
+from process import Process
 import clean
 
-# clean the corpus
-def corpus_clean(old_path,new_path):
-	for root, dirs, files in os.walk(old_path):
-		for f in files:
-			# mirror dir structure 
-			root_out = root.replace(old_path,new_path,1)
-			if (not os.path.isdir(root_out)):
-				os.makedirs(root_out)
-			file_in_path = os.path.join(root,f)
-			file_out_path = os.path.join(root_out,f)
-			with open(file_in_path,'r') as f_in, open(file_out_path,'w') as f_out:
-				text_in = f_in.read()
-				print('read: ' + file_in_path) # debugging
-				f_out.write(clean.clean(text_in))
-				print('write: ' + file_out_path) # debugging
+class Corpus:
+	def __init__(self, process_in_use):
+		self.PROCESS = process_in_use
 
-# normalize the corpus
-def corpus_normalize(old_path, new_path, server):
-	if (isinstance(server,StanfordCoreNLP)):
+	# clean the corpus
+	def corpus_clean(self, old_path, new_path):
 		for root, dirs, files in os.walk(old_path):
 			for f in files:
 				# mirror dir structure 
@@ -37,18 +21,27 @@ def corpus_normalize(old_path, new_path, server):
 				with open(file_in_path,'r') as f_in, open(file_out_path,'w') as f_out:
 					text_in = f_in.read()
 					print('read: ' + file_in_path) # debugging
-					text_clean = clean.clean(text_in)
-					if (text_clean == ''): # cannot normalize empty text
-						f_out.write('')
-					else:
-						f_out.write(clean.remove_multiple_whitespace(process.normalize(text_clean,server)))
+					f_out.write(clean.clean(text_in))
 					print('write: ' + file_out_path) # debugging
-	else:
-		print('CoreNLP error!')
-		return None
+
+	# multi-processing the normalization
+	def corpus_normalize_m(self, old_path, new_path):
+		file_list = list()
+		for root, dirs, files in os.walk(old_path):
+			for f in files:
+				root_out = root.replace(old_path,new_path,1)
+				if (not os.path.isdir(root_out)):
+					os.makedirs(root_out)
+				file_list.append((self.PROCESS,root,root_out,f))
+
+		pool = Pool(cpu_count())
+		for file_tuple in file_list:
+			pool.apply_async(normalize_m,file_tuple)
+		pool.close()
+		pool.join()
 
 # the multi-processor
-def normalize_m(root, root_out, f, server):
+def normalize_m(process_in_use, root, root_out, f):
 	file_in_path = os.path.join(root,f)
 	file_out_path = os.path.join(root_out,f)
 	with open(file_in_path,'r') as f_in, open(file_out_path,'w') as f_out:
@@ -58,25 +51,5 @@ def normalize_m(root, root_out, f, server):
 		if (text_clean == ''): # cannot normalize empty text
 			f_out.write('')
 		else:
-			f_out.write(clean.remove_multiple_whitespace(process.normalize(text_clean,server)))
+			f_out.write(clean.remove_multiple_whitespace(process_in_use.normalize(text_clean)))
 		print('write: ' + file_out_path) # debugging
-
-# multi-processing the normalization
-def corpus_normalize_m(old_path, new_path, server):
-	if (not isinstance(server,StanfordCoreNLP)):
-		print('CoreNLP error!')
-		return None
-
-	file_list = list()
-	for root, dirs, files in os.walk(old_path):
-		for f in files:
-			root_out = root.replace(old_path,new_path,1)
-			if (not os.path.isdir(root_out)):
-				os.makedirs(root_out)
-			file_list.append((root,root_out,f,server))
-
-	pool = Pool(4)
-	for file_tuple in file_list:
-		pool.apply_async(normalize_m,file_tuple)
-	pool.close()
-	pool.join()
