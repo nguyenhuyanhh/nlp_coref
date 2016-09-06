@@ -1,2 +1,7 @@
+# Python specifics
 __pycache__/
 *.py[cod]
+
+# Test files
+input.txt
+output.json
