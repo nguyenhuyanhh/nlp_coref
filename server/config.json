@@ -1,0 +1,5 @@
+{
+	"base_url": "http://pdf.bretty.io/api/v1/",
+	"auth_class": "HTTPBasicAuth",
+	"auth_args": ["anh", "iamhuyanh"]
+}
