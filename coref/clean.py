@@ -20,7 +20,7 @@ def mult_to_singleline(txt):
     return ' '.join(txt.split('\n')).strip()
 
 
-def clean(txt):
+def Clean(txt):
     methods = [
         known_replacements,
         mult_to_singleline
