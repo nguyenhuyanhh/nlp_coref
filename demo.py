@@ -1,15 +1,15 @@
 # demo script
 import time
 
-from process import Process
-from corpus import Corpus
-from clean import Clean
+from coref.process import Process
+# from coref.corpus import Corpus
+from coref.clean import Clean
 
 init_start_time = time.time()
 
 # inits
 p = Process()
-c = Corpus(p)
+# c = Corpus(p)
 
 init_end_time = time.time()
 print('Init time: ' + str(init_end_time - init_start_time) + ' seconds')
@@ -17,8 +17,8 @@ print('Init time: ' + str(init_end_time - init_start_time) + ' seconds')
 start_time = time.time()
 
 # normalize some text
-text_in = open('input.txt','r').read()
-print(Clean(p.normalize(Clean(text_in)))
+text_in = open('data/input.txt','r').read()
+print(Clean(p.normalize(Clean(text_in))))
 
 # clean the corpus
 # path_in = '/home/nhanh/TDT2_top20'
