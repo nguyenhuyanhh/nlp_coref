@@ -40,10 +40,11 @@ for dir in data_dirs:
     path = './data/raw_' + str(dir)
     for root, dirs, files in os.walk(path):
         for f in files:
-            count_files += 1
             file = os.path.join(root, f)
             with open(file, 'r') as fi:
                 text = fi.read()
+                if (not text == ''):
+                	count_files += 1 
                 for key in model.keys():
                     if key in text:
                         count_occur += 1
