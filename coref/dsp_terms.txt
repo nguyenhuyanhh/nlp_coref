@@ -1,0 +1,43 @@
+AC alternating current
+ADC analog-to-digital converter
+ALU arithmetic-logic unit
+CCD charge coupled device
+CCDF complementary cumulative distribution function
+CFAR constant false alarm rate
+CPU central processing unit
+CT computed tomography
+CVSD continuously variable slope delta
+CW continuous wave
+DAC digital-to-analog converter
+DC direct current
+DTFT discrete time Fourier transform
+DCT discrete cosine transform
+DFT discrete Fourier transform
+DSP digital signal processing
+DST dual signal transmission
+DXP deep execution processor
+DWT discrete wavelet transform
+EDC efficient detection criterion
+FFT fast Fourier transform
+FIR finite impulse response
+FWHM full-width at half maximum
+IAR instantaneous-to-average power ratio
+IDFT inverse discrete Fourier transform
+IFFT inverse fast Fourier transform
+IIR infinite impulse response
+LFM linear frequency modulation
+LMS least-mean-square
+lms least-mean-square
+LSF line spread function
+MCM multicarrier modulation
+MDL minimum description length
+MTF modulation transfer function
+OFDM orthogonal frequency division multiplexing
+PAR peak-to-average power ratio
+pdf probability distribution function
+pmf probability mass function
+PSF point spread function
+RMS root-mean-square
+rms root-mean-square
+RTL register transfer level
+SST single signal transmission
