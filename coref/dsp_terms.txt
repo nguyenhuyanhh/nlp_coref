@@ -1,21 +1,28 @@
 AC alternating current
 ADC analog-to-digital converter
+ADCs analog-to-digital converters
 ALU arithmetic-logic unit
 CCD charge coupled device
 CCDF complementary cumulative distribution function
 CFAR constant false alarm rate
 CPU central processing unit
+CPUs central processing units
 CT computed tomography
 CVSD continuously variable slope delta
 CW continuous wave
 DAC digital-to-analog converter
+DACs digital-to-analog converters
+DBN deep believe network
+DBNs deep believe networks
 DC direct current
-DTFT discrete time Fourier transform
 DCT discrete cosine transform
 DFT discrete Fourier transform
+DNN deep neural network
+DNNs deep neural networks
 DSP digital signal processing
 DSPs digital signal processors
 DST dual signal transmission
+DTFT discrete time Fourier transform
 DXP deep execution processor
 DWT discrete wavelet transform
 EDC efficient detection criterion
@@ -26,6 +33,7 @@ IAR instantaneous-to-average power ratio
 IDFT inverse discrete Fourier transform
 IFFT inverse fast Fourier transform
 IIR infinite impulse response
+LDA latent Dirichlet association
 LFM linear frequency modulation
 LMS least-mean-square
 lms least-mean-square

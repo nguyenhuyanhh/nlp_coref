@@ -4,21 +4,34 @@ from pycorenlp import StanfordCoreNLP
 
 
 class Process:
+    # class variables
+    SERVER = None
+    SERVER_URI = None
+    SERVER_PROPS = None
+
     # start CoreNLP server, use sample text to initialize all annotators
     def __init__(self, uri='http://localhost:9000',
-                 props={'annotators': 'tokenize,ssplit,pos,ner,lemma,parse,\
-                        dcoref', 'outputFormat': 'json'}):
+                 props={'annotators': 'tokenize,ssplit,pos,ner,lemma,parse,dcoref', 'outputFormat': 'json'}):
         self.SERVER_URI = uri
         self.SERVER = StanfordCoreNLP(self.SERVER_URI)
-        self.PROPERTIES = props
-        if (self.SERVER.annotate('test', properties=self.PROPERTIES)):
+        self.SERVER_PROPS = props
+        if (self.SERVER.annotate('test', properties=self.SERVER_PROPS)):
             print('CoreNLP initialized')
         else:
             print('CoreNLP error!')
 
+    # load terms model
+    def load_model(file):
+        model = dict()
+        with open(file, 'r') as model_file:
+            for line in model_file:
+                tmp = line.split(maxsplit=1) # only split after first space
+                model[tmp[0]] = tmp[1].rstrip('\n')
+        return model
+
     # annotate text and return json
     def annotate_txt(self, txt, output_to_file=0):
-        json_out = self.SERVER.annotate(txt, properties=self.PROPERTIES)
+        json_out = self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
         if (output_to_file == 1):
             with open('output.json', 'w') as out_file:
                 json.dump(json_out, out_file, indent=2)
@@ -30,7 +43,7 @@ class Process:
         if (significant_corefs != (0 or 1)):
             return None
 
-        json_out = self.SERVER.annotate(txt, properties=self.PROPERTIES)
+        json_out = self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
         for coref_id in json_out['corefs']:
             if(len(json_out['corefs'][coref_id]) > significant_corefs):
                 print('coref chain (id = ' + coref_id + ')')
@@ -41,7 +54,7 @@ class Process:
     # normalize a given text (string)
     def normalize(self, txt):
         SPECIAL_TOKEN_LIST = ["'s", ',', '.', ';', ':', '?', '!']
-        json_out = self.SERVER.annotate(txt, properties=self.PROPERTIES)
+        json_out = self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
 
         # generate tokens dictionary
         tokens = dict()

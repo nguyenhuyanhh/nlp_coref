@@ -10,7 +10,7 @@ KNOWN_REPLACEMENTS = [
 # regex patterns
 formula_pattern = r'\b([ωδ\w]+ ?\([\w ωδ]+\)|[^\s]* =( ?[+−]?\w+([\.,]\d+)? ?)([+−×*]( ?\w+(\.\d+)? ?))*( ?= ?[+−]?\d+(\.\d+)?)?\b|zzz)'
 expression_pattern = r'\b( ?[+−]?\w+([\.,]\d+)? ?)([+−×*/]( ?\w+(\.\d+)? ?))+( ?= ?[+−]?\d+(\.\d+)?)?\b'
-range_pattern =  r'−?(\d+|\w|∞)? [≤≥><] −?(\d+|\w|∞)'
+range_pattern = r'−?(\d+|\w|∞)? [≤≥><] −?(\d+|\w|∞)'
 
 # helper functions
 def count_endingfullstop(_str):
@@ -30,15 +30,6 @@ def is_formula(_str):
 
 def remove_multiple_whitespace(_str):
     return re.sub(r'\s+', ' ', _str).strip()
-
-
-def load_model(file):
-    model = dict()
-    with open(file, 'r') as model_file:
-        for line in model_file:
-            tmp = line.split(maxsplit=1)
-            model[tmp[0]] = tmp[1].rstrip('\n')
-    return model
 
 
 # rules
@@ -114,14 +105,16 @@ def mult_to_single_line(_str):
 # main function
 def Clean(txt):
     methods = [
-        known_replacements,
-        remove_non_ascii,
         string_validation,
         remove_formula,
         remove_inline_formula,
         join_broken_words,
+        known_replacements,
+        remove_non_ascii,
         mult_to_single_line
     ]
     for m in methods:
+        # print(m, end='\n\n') # debugging
         txt = m(txt)
+        # print(txt, end='\n\n') # debugging
     return txt
