@@ -15,7 +15,7 @@ class Process:
         self.SERVER_URI = uri
         self.SERVER = StanfordCoreNLP(self.SERVER_URI)
         self.SERVER_PROPS = props
-        if (self.SERVER.annotate('test', properties=self.SERVER_PROPS)):
+        if (self.SERVER.annotate('', properties=self.SERVER_PROPS)):
             print('CoreNLP initialized')
         else:
             print('CoreNLP error!')
@@ -53,7 +53,7 @@ class Process:
 
     # normalize a given text (string)
     def normalize(self, txt):
-        SPECIAL_TOKEN_LIST = ["'s", ',', '.', ';', ':', '?', '!']
+        SPECIAL_TOKEN_LIST = ["'s", ',', '.', ';', ':', '?', '!', 'FORMULA', ']', '[', '(', ')']
         json_out = self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
 
         # generate tokens dictionary
@@ -109,5 +109,6 @@ class Process:
                     txt_out += (tok)
                 else:
                     txt_out += (' ' + (tok))
+            txt_out += '\n'
 
         return txt_out

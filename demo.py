@@ -56,14 +56,15 @@ start_time = time.time()
 path = './data/raw_8'
 for root, dirs, files in os.walk(path):
     f = random.choice(files)
-    print('{}\n'.format(f))
-    with open(os.path.join(root,f), 'r') as file:
-        txt = file.read()
-        print('<raw text>\n\n{}\n\n<clean text>\n\n{}\n'.format(txt, Clean(txt)))
+    with open('demo.log', 'w') as log:
+        log.write('{}\n'.format(f))
+        with open(os.path.join(root,f), 'r') as file:
+            txt = file.read()
+            log.write('<raw text>\n\n{}\n\n<clean text>\n\n{}\n'.format(txt, Clean(txt)))
 
-# normalize some text
-# text_in = open('data/input.txt','r').read()
-print('<normalized text>\n\n{}'.format(p.normalize(Clean(txt))))
+            # normalize some text
+            # text_in = open('data/input.txt','r').read()
+            log.write('<normalized text>\n\n{}'.format(p.normalize(Clean(txt))))
 
 end_time = time.time()
 print('Run time: ' + str(end_time - start_time) + ' seconds')
