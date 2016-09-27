@@ -1,6 +1,4 @@
 import re
-import random
-import os
 
 KNOWN_REPLACEMENTS = [
     ('``', '"'), ("''", '"'), ('_', '-'), ('ﬁ', 'fi'), ('ﬀ', 'ff'), 

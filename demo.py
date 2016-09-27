@@ -52,19 +52,21 @@ start_time = time.time()
 #                     count_files_occur += 1        
 #     print('Book {}: {} sections, {} sections with terms, {} terms'.format(dir, count_files, count_files_occur, count_words_occur))
 
-# test the cleaner
-path = './data/raw_8'
+# test the cleaner and term model
+path = './data/raw_9'
 for root, dirs, files in os.walk(path):
     f = random.choice(files)
     with open('demo.log', 'w') as log:
         log.write('{}\n'.format(f))
         with open(os.path.join(root,f), 'r') as file:
             txt = file.read()
-            log.write('<raw text>\n\n{}\n\n<clean text>\n\n{}\n'.format(txt, Clean(txt)))
+            clean_txt = Clean(txt)
+            norm_txt = p.replace_terms(clean_txt)
+            log.write('<raw text>\n\n{}\n\n<clean text>\n\n{}\n\n<normalized text>\n\n{}'.format(txt, clean_txt, norm_txt))
 
             # normalize some text
             # text_in = open('data/input.txt','r').read()
-            log.write('<normalized text>\n\n{}'.format(p.normalize(Clean(txt))))
+            # log.write('<normalized text>\n\n{}'.format(p.normalize(Clean(txt))))
 
 end_time = time.time()
 print('Run time: ' + str(end_time - start_time) + ' seconds')

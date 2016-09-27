@@ -1,4 +1,6 @@
 import json
+import os
+import re
 
 from pycorenlp import StanfordCoreNLP
 
@@ -8,26 +10,34 @@ class Process:
     SERVER = None
     SERVER_URI = None
     SERVER_PROPS = None
+    TERM_MODEL = None
 
-    # start CoreNLP server, use sample text to initialize all annotators
-    def __init__(self, uri='http://localhost:9000',
-                 props={'annotators': 'tokenize,ssplit,pos,ner,lemma,parse,dcoref', 'outputFormat': 'json'}):
-        self.SERVER_URI = uri
+    # start CoreNLP server, use sample text to initialize all annotators, load term model
+    def __init__(self, config_file='config.json'):
+        cur_dir = os.path.dirname(os.path.realpath(__file__))
+        config = json.load(open(os.path.join(cur_dir, config_file), 'r'))
+        self.SERVER_URI = config['uri']
         self.SERVER = StanfordCoreNLP(self.SERVER_URI)
-        self.SERVER_PROPS = props
-        if (self.SERVER.annotate('', properties=self.SERVER_PROPS)):
+        self.SERVER_PROPS = config['props']
+        if (self.SERVER.annotate('a', properties=self.SERVER_PROPS)):
             print('CoreNLP initialized')
         else:
             print('CoreNLP error!')
-
-    # load terms model
-    def load_model(file):
         model = dict()
-        with open(file, 'r') as model_file:
+        with open(os.path.join(cur_dir, config['term_model']), 'r') as model_file:
             for line in model_file:
                 tmp = line.split(maxsplit=1) # only split after first space
                 model[tmp[0]] = tmp[1].rstrip('\n')
-        return model
+        self.TERM_MODEL = model
+
+    # use the term model
+    def replace_terms(self, txt):
+        result = txt
+        for term in self.TERM_MODEL.keys():
+            find = r'\b{word}\b'.format(word=term)
+            replace = ' {} '.format(self.TERM_MODEL[term])
+            result = re.sub(find, replace, result)
+        return result
 
     # annotate text and return json
     def annotate_txt(self, txt, output_to_file=0):
