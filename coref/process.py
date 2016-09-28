@@ -40,22 +40,14 @@ class Process:
         return result
 
     # annotate text and return json
-    def annotate_txt(self, txt, output_to_file=0):
-        json_out = self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
-        if (output_to_file == 1):
-            with open('output.json', 'w') as out_file:
-                json.dump(json_out, out_file, indent=2)
-
-        return json_out
+    def annotate_txt(self, txt):
+        return self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
 
     # pretty-print out just corefs
-    def coref_print(self, txt, significant_corefs=1):
-        if (significant_corefs != (0 or 1)):
-            return None
-
-        json_out = self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
+    def coref_print(self, txt):
+        json_out = self.annotate_txt(txt)
         for coref_id in json_out['corefs']:
-            if(len(json_out['corefs'][coref_id]) > significant_corefs):
+            if(len(json_out['corefs'][coref_id]) > 1):
                 print('coref chain (id = ' + coref_id + ')')
                 for mention_dict in json_out['corefs'][coref_id]:
                     print('\t\'' + mention_dict['text'] + '\' in sentence ' +
@@ -64,7 +56,7 @@ class Process:
     # normalize a given text (string)
     def normalize(self, txt):
         SPECIAL_TOKEN_LIST = ["'s", ',', '.', ';', ':', '?', '!', 'FORMULA', ']', '[', '(', ')']
-        json_out = self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
+        json_out = self.annotate_txt(txt)
 
         # generate tokens dictionary
         tokens = dict()
@@ -111,14 +103,8 @@ class Process:
                             tokens[sentence][i] = ''
         # print(tokens) # debugging
 
-        # recreate text
-        txt_out = ''
+        # recreate text, one sentence per line
+        txt_out_lines = list()
         for sent in tokens.values():
-            for tok in sent:
-                if tok in SPECIAL_TOKEN_LIST:
-                    txt_out += (tok)
-                else:
-                    txt_out += (' ' + (tok))
-            txt_out += '\n'
-
-        return txt_out
+            txt_out_lines.append(' '.join([t for t in sent if t]).strip())
+        return '\n'.join(txt_out_lines)

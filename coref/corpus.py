@@ -1,8 +1,8 @@
 import os
 from multiprocessing import Pool, cpu_count
 
-from process import Process
-import clean
+from coref.process import Process
+from coref.clean import Clean
 
 
 class Corpus:
@@ -26,7 +26,7 @@ class Corpus:
         pool.join()
 
     # normalize the corpus with multi-processing
-    def corpus_normalize_m(self, old_path, new_path):
+    def corpus_normalize(self, old_path, new_path):
         file_list = list()
         for root, dirs, files in os.walk(old_path):
             for f in files:
@@ -49,7 +49,7 @@ def clean_m(root, root_out, f):
     with open(file_in_path, 'r') as f_in, open(file_out_path, 'w') as f_out:
         text_in = f_in.read()
         print('read: ' + file_in_path)  # debugging
-        f_out.write(clean.clean(text_in))
+        f_out.write(Clean(text_in))
         print('write: ' + file_out_path)  # debugging
 
 
@@ -60,7 +60,7 @@ def normalize_m(process_in_use, root, root_out, f):
     with open(file_in_path, 'r') as f_in, open(file_out_path, 'w') as f_out:
         text_in = f_in.read()
         print('read: ' + file_in_path)  # debugging
-        text_clean = clean.clean(text_in)
+        text_clean = Clean(text_in)
         if (text_clean == ''):  # cannot normalize empty text
             f_out.write('')
         else:

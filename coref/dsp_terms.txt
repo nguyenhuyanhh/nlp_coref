@@ -51,3 +51,4 @@ RMS root-mean-square
 rms root-mean-square
 RTL register transfer level
 SST single signal transmission
+STFT short-time Fourier transform
