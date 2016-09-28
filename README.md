@@ -6,6 +6,7 @@ This library performs certain natural language processing (NLP) tasks, namely co
 * [Overview](#overview)
 * [Requirements](#requirements)
 * [Setup](#setup)
+* [Documentation](#docs)
 
 ## <a name="overview" style="color: #000;"> Overview </a>
 
@@ -22,11 +23,77 @@ The project involves processing of domain-specific text in the domain of Digital
 * [JDK 8](http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html)
 * [Stanford CoreNLP](http://stanfordnlp.github.io/CoreNLP/index.html#download)
 
-This library was developed using Python 3.5.2, JDK 1.8.0_102 and Stanford CoreNLP 3.6.0 running on Lubuntu 16.04.1 LTS.
+This library was developed using Python 3.5.2, JDK 1.8.0_101 and Stanford CoreNLP 3.6.0 running on Lubuntu 16.04.1 LTS.
 
 ## <a name="setup" style="color: #000;"> Setup </a>
 
 1. Clone the project
 1. Install Python dependencies: `$ sudo pip3 install -r requirements.txt`
-1. (Optional) Run the Stanford CoreNLP local server: `$ ./coref/corenlp.sh /path/to/corenlp`
+1. Edit [config files](#docs-conf) (`coref/config.json` and `server/config.json`)
+1. (Optional, if using the default `coref/config.json`) Run the Stanford CoreNLP local server: `$ ./coref/corenlp.sh /path/to/corenlp`
 1. Run the demo program: `$ python3 ./demo.py`
+
+## <a name="docs" style="color: #000;"> Documentations </a>
+
+### Table of Contents
+
+* [Config Files](#docs-conf)
+* [API](#docs-api)
+
+### <a name="docs-conf" style="color: #000;"> Config Files </a>
+
+#### `coref/config.json`
+
+This is the config file to set up Stanford CoreNLP and the term model. Default:
+
+```json
+{
+    "uri": "http://localhost:9000",
+    "props": {
+        "annotators": "tokenize,ssplit,pos,ner,lemma,parse,dcoref",
+        "outputFormat": "json"
+    },
+    "term_model": "dsp_terms.txt"
+}
+```
+
+Attributes:
+
+| Attribute | Value type | Description 
+| --- | --- | ---
+| `uri` | `string` | URI of the CoreNLP server. Default is the local server.
+| `props` | `json` | Properties to be passed into the server. Default is CoreNLP defaults.
+| `term_model` | `string` | Text file containing the term model (abbreviation - normalized form pairs). Default is the hand-picked DSP term model. 
+
+#### `coref/server.json`
+
+This is the config file to set up pdf-client. More info can be found [here](https://github.com/nathanielove/pdf-client). Default:
+
+```json
+{
+    "base_url": "http://pdf.bretty.io/api/v1/",
+    "auth_class": "HTTPBasicAuth",
+    "auth_args": ["user", "password"]
+}
+```
+
+Attributes:
+
+| Attribute | Value type | Description 
+| --- | --- | ---
+| `base_url` | `string` | Base URL of API requests. Default is pdf-client default.
+| `auth_class` | `string` | Authentication class for all requests. Default is pdf-client default.
+| `auth_args` | `list` | Authentication details. Two-element list, first element is username, second is password.
+
+### <a name="docs-api" style="color: #000;"> API: `main.py` </a>
+
+The wrapper for the various functions in this library is provided in `main.py`. These wrappers are called in `demo.py` with `import demo`.
+
+| Wrapper | Argument | Function | Return type | Functionality
+| --- | --- | --- | --- | ---
+| `clean(txt)` | Text to be cleaned | `coref.clean.Clean` | `string` | Clean text
+| `annotate(txt)` | Text to be annotated | `coref.process.Process().annotate_txt` | `json` | Annotate text using CoreNLP
+| `coref(txt)` | Text to be coreferenced | `coref.process.Process().coref_print` | `None` | Print out coreferences
+| `normalize(txt)` | Text to be normalized | `coref.process.Process().normalize` | `string` | Normalize text
+| `corpus_clean(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_clean` | `None` | Clean a corpus
+| `corpus_normalize(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_normalize` | `None` | Normalize a corpus  
