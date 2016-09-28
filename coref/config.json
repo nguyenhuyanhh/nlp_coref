@@ -1,5 +1,5 @@
 {
-	"uri": "http://localhost:9000",
+	"url": "http://localhost:9000",
 	"props": {
 		"annotators": "tokenize,ssplit,pos,ner,lemma,parse,dcoref",
 		"outputFormat": "json"

@@ -8,7 +8,7 @@ from pycorenlp import StanfordCoreNLP
 class Process:
     # class variables
     SERVER = None
-    SERVER_URI = None
+    SERVER_URL = None
     SERVER_PROPS = None
     TERM_MODEL = None
 
@@ -16,8 +16,8 @@ class Process:
     def __init__(self, config_file='config.json'):
         cur_dir = os.path.dirname(os.path.realpath(__file__))
         config = json.load(open(os.path.join(cur_dir, config_file), 'r'))
-        self.SERVER_URI = config['uri']
-        self.SERVER = StanfordCoreNLP(self.SERVER_URI)
+        self.SERVER_URL = config['url']
+        self.SERVER = StanfordCoreNLP(self.SERVER_URL)
         self.SERVER_PROPS = config['props']
         if (self.SERVER.annotate('a', properties=self.SERVER_PROPS)):
             print('CoreNLP initialized')

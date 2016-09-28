@@ -48,7 +48,7 @@ This is the config file to set up Stanford CoreNLP and the term model. Default:
 
 ```json
 {
-    "uri": "http://localhost:9000",
+    "url": "http://localhost:9000",
     "props": {
         "annotators": "tokenize,ssplit,pos,ner,lemma,parse,dcoref",
         "outputFormat": "json"
@@ -61,11 +61,11 @@ Attributes:
 
 | Attribute | Value type | Description 
 | --- | --- | ---
-| `uri` | `string` | URI of the CoreNLP server. Default is the local server.
+| `url` | `string` | URL of the CoreNLP server. Default is the local server.
 | `props` | `json` | Properties to be passed into the server. Default is CoreNLP defaults.
 | `term_model` | `string` | Text file containing the term model (abbreviation - normalized form pairs). Default is the hand-picked DSP term model. 
 
-#### `coref/server.json`
+#### `server/config.json`
 
 This is the config file to set up pdf-client. More info can be found [here](https://github.com/nathanielove/pdf-client). Default:
 
@@ -89,7 +89,7 @@ Attributes:
 
 The wrapper for the various functions in this library is provided in `main.py`. These wrappers are called in `demo.py` with `import demo`.
 
-| Wrapper | Argument | Function | Return type | Functionality
+| Wrapper | Argument | Function | Return type | Description
 | --- | --- | --- | --- | ---
 | `clean(txt)` | Text to be cleaned | `coref.clean.Clean` | `string` | Clean text
 | `annotate(txt)` | Text to be annotated | `coref.process.Process().annotate_txt` | `json` | Annotate text using CoreNLP
