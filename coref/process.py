@@ -55,16 +55,17 @@ class Process:
 
     # normalize a given text (string)
     def normalize(self, txt):
-        SPECIAL_TOKEN_LIST = ["'s", ',', '.', ';', ':', '?', '!', 'FORMULA', ']', '[', '(', ')']
+        # replace terms before doing anything
+        txt = self.replace_terms(txt)
         json_out = self.annotate_txt(txt)
 
         # generate tokens dictionary
         tokens = dict()
         for sentence_dict in json_out['sentences']:
-            tok = list()
+            sentence_tokens = list()
             for t in sentence_dict['tokens']:
-                tok.append(t['originalText'])
-            tokens[sentence_dict['index']] = tok
+                sentence_tokens.append(t['originalText'])
+            tokens[sentence_dict['index']] = sentence_tokens
         # print(tokens) # debugging
 
         # generate replacement table, using only coref chains with >1 mention
@@ -104,7 +105,17 @@ class Process:
         # print(tokens) # debugging
 
         # recreate text, one sentence per line
+        # use two special tokens list ("no space following" and "no space preceding") 
+        SPECIAL_TOKEN_POST = ['(', '[']
+        SPECIAL_TOKEN_PRE = ["'s", ',', '.', ';', ':', '?', '!', 'FORMULA', 'FIGURE', ']', ')']
         txt_out_lines = list()
         for sent in tokens.values():
             txt_out_lines.append(' '.join([t for t in sent if t]).strip())
-        return '\n'.join(txt_out_lines)
+        txt_out = '\n'.join(txt_out_lines)
+        for s_token in SPECIAL_TOKEN_POST:
+            find = '{} '.format(s_token)
+            txt_out = txt_out.replace(find, s_token)
+        for s_token in SPECIAL_TOKEN_PRE:
+            find = ' {}'.format(s_token)
+            txt_out = txt_out.replace(find, s_token)
+        return txt_out
