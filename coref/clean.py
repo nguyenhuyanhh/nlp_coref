@@ -99,6 +99,12 @@ def mult_to_single_line(_str):
     _str = remove_multiple_whitespace(_str)
     return ' '.join(_str.split('\n')).strip()
 
+def merge_placeholder(_str):
+    lines = list()
+    for line in _str.splitlines():
+        lines.append(re.sub(r'(\[FORMULA\]([,.] ?)?){2,}', '[FORMULA]', line))
+    return '\n'.join(lines)
+
 
 # main function
 def Clean(txt):
@@ -109,7 +115,8 @@ def Clean(txt):
         join_broken_words,
         known_replacements,
         remove_non_ascii,
-        mult_to_single_line
+        mult_to_single_line,
+        merge_placeholder
     ]
     for m in methods:
         # print(m, end='\n\n') # debugging
