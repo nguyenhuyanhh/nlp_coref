@@ -87,11 +87,11 @@ Attributes:
 
 ### <a name="docs-api" style="color: #000;"> API: `main.py` </a>
 
-The wrapper for the various functions in this library is provided in `main.py`. These wrappers are called in `demo.py` with `import demo`.
+The wrapper for the various functions in this library is provided in `main.py`. These wrappers are called in `demo.py` with `import main`.
 
 | Wrapper | Argument | Function | Return type | Description
 | --- | --- | --- | --- | ---
-| `clean(txt)` | Text to be cleaned | `coref.clean.Clean` | `string` | Clean text
+| `clean(txt, debug)` | Text to be cleaned | `coref.clean.Clean` | `string` | Clean text
 | `annotate(txt)` | Text to be annotated | `coref.process.Process().annotate_txt` | `json` | Annotate text using CoreNLP
 | `coref(txt)` | Text to be coreferenced | `coref.process.Process().coref_print` | `None` | Print out coreferences
 | `normalize(txt)` | Text to be normalized | `coref.process.Process().normalize` | `string` | Normalize text
