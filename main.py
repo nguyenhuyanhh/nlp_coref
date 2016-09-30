@@ -12,8 +12,8 @@ init_end_time = time()
 print('Init time: ' + str(init_end_time - init_start_time) + ' seconds')
 
 # wrappers
-def clean(txt):
-    return Clean(txt)
+def clean(txt, debug=0):
+    return Clean(txt, debug)
 
 
 def annotate(txt):

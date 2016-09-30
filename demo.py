@@ -9,7 +9,7 @@ text = open('./data/input.txt', 'r').read()
 start_time = time()
 
 # clean some text
-# clean_text = main.clean(text)
+# clean_text = main.clean(text, debug=1)
 # print(clean_text)
 
 # annotate some text
