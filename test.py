@@ -3,13 +3,19 @@ import os
 import random
 import re
 
-# test the model
-# data_dirs = [7, 8, 9, 10, 11]
+from coref.process import Process
+from coref.clean import Clean
+
+# inits
+p = Process()
+
+# test the term model
+# data_dirs = ['raw_7', 'raw_8', 'raw_9', 'raw_10', 'raw_11']
 # for dir in data_dirs:
 #     count_files = 0
 #     count_files_occur = 0
 #     count_words_occur = 0
-#     path = './data/raw_' + str(dir)
+#     path = './data/' + dir
 #     for root, dirs, files in os.walk(path):
 #         for f in files:
 #             file = os.path.join(root, f)
@@ -23,20 +29,14 @@ import re
 #                         count_words_occur += 1
 #                 if (count_words_occur > count_words_occur_pre):
 #                     count_files_occur += 1        
-#     print('Book {}: {} sections, {} sections with terms, {} terms'.format(dir, count_files, count_files_occur, count_words_occur))
+#     print('{}: {} sections, {} sections with terms, {} terms'.format(dir, count_files, count_files_occur, count_words_occur))
 
-# test the cleaner and term model
-# path = './data/raw_9'
-# for root, dirs, files in os.walk(path):
-#     f = random.choice(files)
-#     with open('demo.log', 'w') as log:
-#         log.write('{}\n'.format(f))
-#         with open(os.path.join(root,f), 'r') as file:
-#             txt = file.read()
-#             clean_txt = Clean(txt)
-#             norm_txt = p.replace_terms(clean_txt)
-#             log.write('<raw text>\n\n{}\n\n<clean text>\n\n{}\n\n<normalized text>\n\n{}'.format(txt, clean_txt, norm_txt))
-
-            # normalize some text
-            # text_in = open('data/input.txt','r').read()
-            # log.write('<normalized text>\n\n{}'.format(p.normalize(Clean(txt))))
+# test the cleaner
+path = './data/raw_9'
+for root, dirs, files in os.walk(path):
+    f = random.choice(files)
+    print('{}\n'.format(f))
+    with open(os.path.join(root,f), 'r') as file:
+        txt = file.read()
+        print(txt)
+        Clean(txt, debug=1)

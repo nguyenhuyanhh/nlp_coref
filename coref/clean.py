@@ -107,7 +107,7 @@ def merge_placeholder(_str):
 
 
 # main function
-def Clean(txt):
+def Clean(txt, debug=0):
     methods = [
         string_validation,
         remove_formula,
@@ -119,7 +119,7 @@ def Clean(txt):
         merge_placeholder
     ]
     for m in methods:
-        # print(m, end='\n\n') # debugging
         txt = m(txt)
-        # print(txt, end='\n\n') # debugging
+        if debug:
+            print('\n\n{}\n\n{}'.format(m, txt))
     return txt
