@@ -12,7 +12,7 @@ start_time = time()
 # text = main.clean(text)
 # print(text)
 
-# clean on non ascii characters for some text
+# clean all non ascii characters for some text
 text = main.clean_non_ascii(text)
 # print(text)
 
@@ -36,4 +36,4 @@ print(main.normalize(text))
 # main.corpus_normalize(path_in, path_out)
 
 end_time = time()
-print('Run time: ' + str(end_time - start_time) + ' seconds')
+print('Run time: {} seconds'.format(end_time - start_time))
