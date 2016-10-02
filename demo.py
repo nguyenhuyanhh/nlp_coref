@@ -9,8 +9,12 @@ text = open('./data/input.txt', 'r').read()
 start_time = time()
 
 # clean some text
-# clean_text = main.clean(text, debug=1)
-# print(clean_text)
+# text = main.clean(text)
+# print(text)
+
+# clean on non ascii characters for some text
+text = main.clean_non_ascii(text)
+# print(text)
 
 # annotate some text
 # print(main.annotate(text))

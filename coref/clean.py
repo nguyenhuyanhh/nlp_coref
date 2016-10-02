@@ -106,7 +106,7 @@ def merge_placeholder(_str):
 
 
 # main function
-def Clean(txt, debug=0):
+class Clean():
     methods = [
         string_validation,
         remove_formula,
@@ -117,8 +117,14 @@ def Clean(txt, debug=0):
         mult_to_single_line,
         merge_placeholder
     ]
-    for m in methods:
-        txt = m(txt)
-        if debug:
-            print('\n\n{}\n\n{}'.format(m, txt))
-    return txt
+
+    def __init__(self, method_list=[]):
+        if (len(method_list) > 0):
+            self.methods = method_list
+
+    def clean(self, txt, debug=0):
+        for m in self.methods:
+            txt = m(txt)
+            if debug:
+                print('\n\n{}\n\n{}'.format(m, txt))
+        return txt

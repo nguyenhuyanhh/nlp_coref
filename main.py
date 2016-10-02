@@ -2,35 +2,41 @@ from time import time
 
 from coref.process import Process
 from coref.corpus import Corpus
-from coref.clean import Clean
+from coref.clean import Clean, known_replacements, remove_non_ascii
 
 # inits
 init_start_time = time()
-p = Process()
-c = Corpus(p)
+proc = Process()
+corp = Corpus(proc)
 init_end_time = time()
 print('Init time: ' + str(init_end_time - init_start_time) + ' seconds')
 
 # wrappers
 def clean(txt, debug=0):
-    return Clean(txt, debug)
+    cleaner = Clean()
+    return cleaner.clean(txt, debug)
+
+
+def clean_non_ascii(txt, debug=0):
+    cleaner = Clean([known_replacements, remove_non_ascii])
+    return cleaner.clean(txt, debug)
 
 
 def annotate(txt):
-    return p.annotate_txt(txt)
+    return proc.annotate_txt(txt)
 
 
 def coref(txt):
-    return p.coref_print(txt)
+    return proc.coref_print(txt)
 
 
 def normalize(txt):
-    return p.normalize(txt)
+    return proc.normalize(txt)
 
 
 def corpus_clean(path_in, path_out):
-    return c.corpus_clean(path_in, path_out)
+    return corp.corpus_clean(path_in, path_out)
 
 
 def corpus_normalize(path_in, path_out):
-    return c.corpus_normalize(path_in, path_out)
+    return corp.corpus_normalize(path_in, path_out)
