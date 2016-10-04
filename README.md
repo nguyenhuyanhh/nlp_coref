@@ -91,7 +91,8 @@ The wrapper for the various functions in this library is provided in `main.py`. 
 
 | Wrapper | Argument | Function | Return type | Description
 | --- | --- | --- | --- | ---
-| `clean(txt, debug)` | Text to be cleaned | `coref.clean.Clean` | `string` | Clean text
+| `clean(txt, debug)` | Text to be cleaned | `coref.clean.Clean().clean` | `string` | Clean text
+| `clean_non_ascii(txt, debug)` | Text to be cleaned | `coref.clean.Clean([...]).clean` | `string` | Clean only non-ASCII characters from text
 | `annotate(txt)` | Text to be annotated | `coref.process.Process().annotate_txt` | `json` | Annotate text using CoreNLP
 | `coref(txt)` | Text to be coreferenced | `coref.process.Process().coref_print` | `None` | Print out coreferences
 | `normalize(txt)` | Text to be normalized | `coref.process.Process().normalize` | `string` | Normalize text
