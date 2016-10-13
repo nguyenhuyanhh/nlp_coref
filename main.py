@@ -3,6 +3,7 @@ from time import time
 from coref.process import Process
 from coref.corpus import Corpus
 from coref.clean import Clean, known_replacements, remove_non_ascii
+from coref.svm import svm_eval
 
 # inits
 init_start_time = time()
@@ -40,3 +41,7 @@ def corpus_clean(path_in, path_out):
 
 def corpus_normalize(path_in, path_out):
     return corp.corpus_normalize(path_in, path_out)
+
+
+def svm(path):
+	svm_eval(path)

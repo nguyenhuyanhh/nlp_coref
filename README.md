@@ -97,4 +97,5 @@ The wrapper for the various functions in this library is provided in `main.py`. 
 | `coref(txt)` | Text to be coreferenced | `coref.process.Process().coref_print` | `None` | Print out coreferences
 | `normalize(txt)` | Text to be normalized | `coref.process.Process().normalize` | `string` | Normalize text
 | `corpus_clean(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_clean` | `None` | Clean a corpus
-| `corpus_normalize(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_normalize` | `None` | Normalize a corpus  
+| `corpus_normalize(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_normalize` | `None` | Normalize a corpus
+| `svm(path)` | Input path for corpus | `coref.svm.svm_eval` | `None` | SVM to support topic classification of a corpus

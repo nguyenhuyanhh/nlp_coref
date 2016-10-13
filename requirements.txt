@@ -1,2 +1,10 @@
+# coref.process
 pycorenlp
+
+# coref.server
 pdf_client
+
+# coref.svm
+numpy
+scipy
+scikit-learn

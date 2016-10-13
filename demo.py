@@ -13,7 +13,7 @@ start_time = time()
 # print(text)
 
 # clean all non ascii characters for some text
-text = main.clean_non_ascii(text)
+# text = main.clean_non_ascii(text)
 # print(text)
 
 # annotate some text
@@ -23,17 +23,21 @@ text = main.clean_non_ascii(text)
 # print(main.coref(text))
 
 # normalize some text
-print(main.normalize(text))
+# print(main.normalize(text))
 
 # clean the corpus
-# path_in = '/home/nhanh/TDT2_top20'
-# path_out = '/home/nhanh/TDT2_top20_cleaned'
+# path_in = './data/TDT2_top20'
+# path_out = './data/TDT2_top20_cleaned'
 # main.corpus_clean(path_in, path_out)
 
 # normalize the corpus
 # path_in = '/home/nhanh/test'
 # path_out = '/home/nhanh/test_coref'
 # main.corpus_normalize(path_in, path_out)
+
+# SVM evaluation of a corpus to support topic classification
+path = './data/TDT2_top20'
+main.svm(path)
 
 end_time = time()
 print('Run time: {} seconds'.format(end_time - start_time))
