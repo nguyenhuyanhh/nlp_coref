@@ -67,7 +67,6 @@ class Process:
             for t in sentence_dict['tokens']:
                 sentence_tokens.append(t['originalText'])
             tokens[sentence_dict['index']] = sentence_tokens
-        # print(tokens) # debugging
 
         # generate replacement table, using only coref chains with >1 mention
         repl_table = dict()
@@ -86,7 +85,6 @@ class Process:
                     if (m[0] != rep_mention_sent):
                         # avoid replacing mentions in the same sentence
                         repl_table[m] = rep_mention
-        # print(repl_table) # debugging
 
         # replace tokens with representative mentions
         for repl_key in sorted(repl_table.keys()):
@@ -103,7 +101,6 @@ class Process:
                     else:
                         for i in range(stIn + 1, endIn + 1):
                             tokens[sentence][i] = ''
-        # print(tokens) # debugging
 
         # recreate text, one sentence per line
         # use two special tokens list ("no space following" and "no space

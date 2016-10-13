@@ -9,12 +9,14 @@ from sklearn.linear_model import SGDClassifier
 from sklearn import metrics
 from sklearn.cross_validation import train_test_split
 
+
 def svm_eval(path):
     print("starting reading")
     all_texts = load_files(path)
     print("finish reading")
 
-    data_train, data_test, target_train, target_test = train_test_split(all_texts.data, all_texts.target, test_size=0.1)
+    data_train, data_test, target_train, target_test = train_test_split(
+        all_texts.data, all_texts.target, test_size=0.1)
 
     print("training " + str(len(data_train)))
     print("test " + str(len(data_test)))
@@ -25,4 +27,5 @@ def svm_eval(path):
     _ = text_clf.fit(data_train, target_train)
     predicted = text_clf.predict(data_test)
     print(np.mean(predicted == target_test))
-    print(metrics.classification_report(target_test, predicted, target_names=all_texts.target_names))
+    print(metrics.classification_report(target_test,
+                                        predicted, target_names=all_texts.target_names))
