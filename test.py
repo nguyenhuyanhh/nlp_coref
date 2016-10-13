@@ -8,6 +8,7 @@ from coref.clean import Clean
 
 # inits
 p = Process()
+c = Clean()
 
 # test the term model
 # data_dirs = ['raw_7', 'raw_8', 'raw_9', 'raw_10', 'raw_11']
@@ -39,4 +40,4 @@ for root, dirs, files in os.walk(path):
     with open(os.path.join(root,f), 'r') as file:
         txt = file.read()
         print(txt)
-        Clean(txt, debug=1)
+        c.clean(txt, debug=1)
