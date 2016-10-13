@@ -99,3 +99,4 @@ The wrapper for the various functions in this library is provided in `main.py`. 
 | `corpus_clean(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_clean` | `None` | Clean a corpus
 | `corpus_normalize(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_normalize` | `None` | Normalize a corpus
 | `svm(path)` | Input path for corpus | `coref.svm.svm_eval` | `None` | SVM to support topic classification of a corpus
+| `get_all` | None | `server.crawler.book_download_raw_all` | `None` | Download all raw sections of all books
