@@ -36,8 +36,11 @@ start_time = time()
 # main.corpus_normalize(path_in, path_out)
 
 # SVM evaluation of a corpus to support topic classification
-path = './data/TDT2_top20'
-main.svm(path)
+# path = './data/TDT2_top20'
+# main.svm(path)
+
+# get all raw books from the server
+main.get_raw()
 
 end_time = time()
 print('Run time: {} seconds'.format(end_time - start_time))

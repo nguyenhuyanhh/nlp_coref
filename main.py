@@ -4,6 +4,7 @@ from coref.process import Process
 from coref.corpus import Corpus
 from coref.clean import Clean, known_replacements, remove_non_ascii
 from coref.svm import svm_eval
+from server.crawler import book_download_raw_all
 
 # inits
 init_start_time = time()
@@ -45,3 +46,7 @@ def corpus_normalize(path_in, path_out):
 
 def svm(path):
 	svm_eval(path)
+
+
+def get_raw():
+	book_download_raw_all()
