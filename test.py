@@ -24,12 +24,12 @@ c = Clean()
 #                 words = re.split('\W+', Clean(fi.read()))
 #                 count_words_occur_pre = count_words_occur
 #                 if (len(words) > 1):
-#                     count_files += 1 
+#                     count_files += 1
 #                 for key in p.TERM_MODEL.keys():
 #                     if key in words:
 #                         count_words_occur += 1
 #                 if (count_words_occur > count_words_occur_pre):
-#                     count_files_occur += 1        
+#                     count_files_occur += 1
 #     print('{}: {} sections, {} sections with terms, {} terms'.format(dir, count_files, count_files_occur, count_words_occur))
 
 # test the cleaner
@@ -37,7 +37,7 @@ path = './data/raw_9'
 for root, dirs, files in os.walk(path):
     f = random.choice(files)
     print('{}\n'.format(f))
-    with open(os.path.join(root,f), 'r') as file:
+    with open(os.path.join(root, f), 'r') as file:
         txt = file.read()
         print(txt)
         c.clean(txt, debug=1)

@@ -10,6 +10,7 @@ cur_dir = os.path.dirname(os.path.realpath(__file__))
 with open(os.path.join(cur_dir, 'english_words.txt'), 'r') as word_list_file:
     word_list = set(word.strip().lower() for word in word_list_file)
 
+
 def is_english(_word):
     return _word.lower().strip('.,!()') in word_list
 
@@ -59,6 +60,7 @@ def check_english(_str):
 def mult_to_single_line(_str):
     _str = remove_multiple_whitespace(_str)
     return ' '.join(_str.split('\n')).strip()
+
 
 def merge_placeholder(_str):
     lines = list()

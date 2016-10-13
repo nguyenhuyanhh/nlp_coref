@@ -5,3 +5,6 @@ __pycache__/
 # Data
 data/
 *.log
+
+# VSCode
+.vscode/

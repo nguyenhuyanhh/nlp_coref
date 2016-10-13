@@ -14,6 +14,8 @@ init_end_time = time()
 print('Init time: ' + str(init_end_time - init_start_time) + ' seconds')
 
 # wrappers
+
+
 def clean(txt, debug=0):
     cleaner = Clean()
     return cleaner.clean(txt, debug)
@@ -45,8 +47,8 @@ def corpus_normalize(path_in, path_out):
 
 
 def svm(path):
-	svm_eval(path)
+    svm_eval(path)
 
 
 def get_raw():
-	book_download_raw_all()
+    book_download_raw_all()

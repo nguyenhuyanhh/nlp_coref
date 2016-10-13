@@ -12,7 +12,8 @@ class Process:
     SERVER_PROPS = None
     TERM_MODEL = None
 
-    # start CoreNLP server, use sample text to initialize all annotators, load term model
+    # start CoreNLP server, use sample text to initialize all annotators, load
+    # term model
     def __init__(self, config_file='config.json'):
         cur_dir = os.path.dirname(os.path.realpath(__file__))
         config = json.load(open(os.path.join(cur_dir, config_file), 'r'))
@@ -26,7 +27,7 @@ class Process:
         model = dict()
         with open(os.path.join(cur_dir, config['term_model']), 'r') as model_file:
             for line in model_file:
-                tmp = line.split(maxsplit=1) # only split after first space
+                tmp = line.split(maxsplit=1)  # only split after first space
                 model[tmp[0]] = tmp[1].rstrip('\n')
         self.TERM_MODEL = model
 
@@ -76,11 +77,11 @@ class Process:
                 for mention_dict in json_out['corefs'][coref_id]:
                     if(mention_dict['isRepresentativeMention']):
                         rep_mention = mention_dict['text']
-                        rep_mention_sent = mention_dict['sentNum']-1
+                        rep_mention_sent = mention_dict['sentNum'] - 1
                     else:
-                        mention_pos.append((mention_dict['sentNum']-1,
-                                            mention_dict['startIndex']-1,
-                                            mention_dict['endIndex']-2))
+                        mention_pos.append((mention_dict['sentNum'] - 1,
+                                            mention_dict['startIndex'] - 1,
+                                            mention_dict['endIndex'] - 2))
                 for m in mention_pos:
                     if (m[0] != rep_mention_sent):
                         # avoid replacing mentions in the same sentence
@@ -97,17 +98,19 @@ class Process:
                     tokens[sentence][stIn] = repl_table[repl_key]
                     if (tokens[sentence][endIn] == "'s"):
                         # only replace until before the 's
-                        for i in range(stIn+1, endIn):
+                        for i in range(stIn + 1, endIn):
                             tokens[sentence][i] = ''
                     else:
-                        for i in range(stIn+1, endIn+1):
+                        for i in range(stIn + 1, endIn + 1):
                             tokens[sentence][i] = ''
         # print(tokens) # debugging
 
         # recreate text, one sentence per line
-        # use two special tokens list ("no space following" and "no space preceding") 
+        # use two special tokens list ("no space following" and "no space
+        # preceding")
         SPECIAL_TOKEN_POST = ['(', '[']
-        SPECIAL_TOKEN_PRE = ["'s", ',', '.', ';', ':', '?', '!', 'FORMULA', 'FIGURE', ']', ')']
+        SPECIAL_TOKEN_PRE = ["'s", ',', '.', ';', ':',
+                             '?', '!', 'FORMULA', 'FIGURE', ']', ')']
         txt_out_lines = list()
         for sent in tokens.values():
             txt_out_lines.append(' '.join([t for t in sent if t]).strip())

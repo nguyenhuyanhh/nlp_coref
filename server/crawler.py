@@ -14,6 +14,8 @@ config.load_from_file(config_file)
 data_dir = os.path.join(os.path.dirname(cur_dir), 'data/')
 
 # get a list of book_id's
+
+
 def book_list():
     book_list = list()
     book_list_api = book.List().execute()
@@ -22,6 +24,8 @@ def book_list():
     return book_list
 
 # download all raw sections from a book into individual files
+
+
 def book_download_raw(book_id):
     # create folder for book
     book_dir = os.path.join(data_dir, 'raw_{}'.format(book_id))
@@ -29,6 +33,7 @@ def book_download_raw(book_id):
         os.makedirs(book_dir)
 
     class SectionDownloader(TextProcessor):
+
         def process(self, text, section_id):
             with open(os.path.join(book_dir, '{}.txt'.format(section_id)), 'w+') as file:
                 file.write(text)
@@ -36,14 +41,16 @@ def book_download_raw(book_id):
 
     # enable INFO level logging
     logging.basicConfig()
-    logging.getLogger(pdf_client.multithread.worker.__name__).setLevel(logging.INFO)
+    logging.getLogger(
+        pdf_client.multithread.worker.__name__).setLevel(logging.INFO)
 
     # create a worker and start
     worker = MultiThreadWorker(processor=SectionDownloader(), book=book_id)
     worker.start()
 
 # download all raw sections from all books
+
+
 def book_download_raw_all():
     for book_id in book_list():
         book_download_raw(book_id)
-
