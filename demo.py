@@ -1,9 +1,12 @@
 # demo script
+import os
 from time import time
 
 import api
 
-text = open('./data/input.txt', 'r').read()
+cur_dir = os.path.dirname(os.path.realpath(__file__))
+data_dir = os.path.join(cur_dir, 'data/')
+text = open(os.path.join(data_dir, 'input.txt'), 'r').read()
 
 # main program
 start_time = time()
@@ -26,21 +29,21 @@ start_time = time()
 # print(api.normalize(text))
 
 # clean the corpus
-# path_in = './data/TDT2_top20'
-# path_out = './data/TDT2_top20_cleaned'
+# path_in = os.path.join(data_dir, 'TDT2_top20/')
+# path_out = os.path.join(data_dir, 'TDT2_top20_cleaned/')
 # api.corpus_clean(path_in, path_out)
 
 # normalize the corpus
-# path_in = '/home/nhanh/test'
-# path_out = '/home/nhanh/test_coref'
+# path_in = os.path.join(data_dir, 'test/')
+# path_out = os.path.join(data_dir, 'test_coref/')
 # api.corpus_normalize(path_in, path_out)
 
 # SVM evaluation of a corpus to support topic classification
-# path = './data/TDT2_top20'
+# path = os.path.join(data_dir, 'TDT2_top20/')
 # api.svm(path)
 
 # get all raw books from the server
-api.get_raw()
+# api.get_raw()
 
 end_time = time()
 print('Run time: {} seconds'.format(end_time - start_time))
