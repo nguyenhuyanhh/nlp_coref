@@ -13,8 +13,6 @@ corp = Corpus(proc)
 init_end_time = time()
 print('Init time: ' + str(init_end_time - init_start_time) + ' seconds')
 
-# wrappers
-
 
 def clean(txt, debug=0):
     cleaner = Clean()

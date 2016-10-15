@@ -8,7 +8,7 @@ This library performs certain natural language processing (NLP) tasks, namely co
 * [Setup](#setup)
 * [Documentation](#docs)
 
-## <a name="overview" style="color: #000;"> Overview </a>
+## Overview
 
 In normal contexts, texts contain ambiguous mentions that are of little value to processing and machine learning. An example would be "He was sick." - such a standalone sentence has little meaning; putting it in some form of context such as "John was not at work yesterday. He was sick." allows us to interpret "he" as "John", and the aim of coreference resolution is to resolve "he" into "John" so that meaningful properties can be attributed to "John".
 
@@ -16,7 +16,7 @@ The state of the art in coreference resolution is [Stanford Deterministic Corefe
 
 The project involves processing of domain-specific text in the domain of Digital Signal Processing (DSP). To test the approach, some DSP textbooks would be used; the data is available on a server, and the library would include integration with the [server](https://github.com/nathanielove/pdf-server) through the [Python client](https://github.com/nathanielove/pdf-client).
 
-## <a name="requirements" style="color: #000;"> Requirements </a>
+## Requirements
 
 * A machine running Linux
 * [Python 3](https://www.python.org/downloads/)
@@ -25,7 +25,7 @@ The project involves processing of domain-specific text in the domain of Digital
 
 This library was developed using Python 3.5.2, JDK 1.8.0_101 and Stanford CoreNLP 3.6.0 running on Lubuntu 16.04.1 LTS.
 
-## <a name="setup" style="color: #000;"> Setup </a>
+## Setup
 
 1. Clone the project
 1. Install Python dependencies: `$ sudo pip3 install -r requirements.txt`
@@ -33,14 +33,14 @@ This library was developed using Python 3.5.2, JDK 1.8.0_101 and Stanford CoreNL
 1. (Optional, if using the default `coref/config.json`) Run the Stanford CoreNLP local server: `$ ./coref/corenlp.sh /path/to/corenlp`
 1. Run the demo program: `$ python3 ./demo.py`
 
-## <a name="docs" style="color: #000;"> Documentations </a>
+## Documentations
 
 ### Table of Contents
 
 * [Config Files](#docs-conf)
 * [API](#docs-api)
 
-### <a name="docs-conf" style="color: #000;"> Config Files </a>
+### <a name="docs-conf"> Config Files </a>
 
 #### `coref/config.json`
 
@@ -85,9 +85,9 @@ Attributes:
 | `auth_class` | `string` | Authentication class for all requests. Default is pdf-client default.
 | `auth_args` | `list` | Authentication details. Two-element list, first element is username, second is password.
 
-### <a name="docs-api" style="color: #000;"> API: `main.py` </a>
+### <a name="docs-api"> API: `api.py` </a>
 
-The wrapper for the various functions in this library is provided in `main.py`. These wrappers are called in `demo.py` with `import main`.
+The wrapper for the various functions in this library is provided in `api.py`. These wrappers are called in `demo.py` with `import api`.
 
 | Wrapper | Argument | Function | Return type | Description
 | --- | --- | --- | --- | ---
