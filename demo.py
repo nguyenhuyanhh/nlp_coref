@@ -23,7 +23,7 @@ start_time = time()
 # print(api.annotate(text))
 
 # coref some text
-# print(api.coref(text))
+print(api.coref(text))
 
 # normalize some text
 # print(api.normalize(text))

@@ -13,20 +13,18 @@ config_file = os.path.join(cur_dir, 'config.json')
 config.load_from_file(config_file)
 data_dir = os.path.join(os.path.dirname(cur_dir), 'data/')
 
-# get a list of book_id's
-
 
 def book_list():
+    """get a list of book_id's"""
     book_list = list()
     book_list_api = book.List().execute()
     for book_dict in book_list_api:
         book_list.append(book_dict['id'])
     return book_list
 
-# download all raw sections from a book into individual files
-
 
 def book_download_raw(book_id):
+    """download all raw sections from a book into individual files"""
     # create folder for book
     book_dir = os.path.join(data_dir, 'raw_{}'.format(book_id))
     if not os.path.isdir(book_dir):
@@ -48,9 +46,8 @@ def book_download_raw(book_id):
     worker = MultiThreadWorker(processor=SectionDownloader(), book=book_id)
     worker.start()
 
-# download all raw sections from all books
-
 
 def book_download_raw_all():
+    """download all raw sections from all books"""
     for book_id in book_list():
         book_download_raw(book_id)
