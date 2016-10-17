@@ -6,6 +6,7 @@ from coref.clean import Clean
 
 
 class Corpus:
+
     def __init__(self, process_in_use):
         self.PROCESS = process_in_use
 
