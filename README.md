@@ -6,7 +6,7 @@ This library performs certain natural language processing (NLP) tasks, namely co
 * [Overview](#overview)
 * [Requirements](#requirements)
 * [Setup](#setup)
-* [Documentation](#docs)
+* [Documentation](#documentation)
 
 ## Overview
 
@@ -18,29 +18,31 @@ The project involves processing of domain-specific text in the domain of Digital
 
 ## Requirements
 
-* A machine running Linux
+* Windows/ Linux
 * [Python 3](https://www.python.org/downloads/)
-* [JDK 8](http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html)
+* JDK 8 ([Windows](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)/ [Linux](http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html))
 * [Stanford CoreNLP](http://stanfordnlp.github.io/CoreNLP/index.html#download)
 
-This library was developed using Python 3.5.2, JDK 1.8.0_101 and Stanford CoreNLP 3.6.0 running on Lubuntu 16.04.1 LTS.
+This library was developed using Python 3.5.2, JDK 1.8.0_101 and Stanford CoreNLP 3.6.0 running on Lubuntu 16.04.1 LTS. Tested on Windows 10 Insider Preview build 14942.
 
 ## Setup
 
-1. Clone the project
-1. Install Python dependencies: `$ sudo pip3 install -r requirements.txt`
-1. Edit [config files](#docs-conf) (`coref/config.json` and `server/config.json`)
-1. (Optional, if using the default `coref/config.json`) Run the Stanford CoreNLP local server: `$ ./coref/corenlp.sh /path/to/corenlp`
-1. Run the demo program: `$ python3 ./demo.py`
+| Step | Windows | Linux
+| --- | --- | ---
+| 1. Clone the project | |
+| 2. Install Python dependencies | `> python -m pip install -r requirements.txt` | `$ sudo pip3 install -r requirements.txt`
+| 3. Edit [config files](#config-files) (`coref/config.json` and `server/config.json`) | |
+| 4. (Optional, if using the default `coref/config.json`) Run the Stanford CoreNLP local server | `> ./corenlp/corenlp.bat /path/to/corenlp` | `$ ./corenlp/corenlp.sh /path/to/corenlp`
+| 5. Run the demo program | `> python ./demo.py > demo.log` | `$ python3 ./demo.py > demo.log`
 
-## Documentations
+## Documentation
 
 ### Table of Contents
 
-* [Config Files](#docs-conf)
-* [API](#docs-api)
+* [Config Files](#config-files)
+* [API](#api)
 
-### <a name="docs-conf"> Config Files </a>
+### Config Files
 
 #### `coref/config.json`
 
@@ -85,7 +87,7 @@ Attributes:
 | `auth_class` | `string` | Authentication class for all requests. Default is pdf-client default.
 | `auth_args` | `list` | Authentication details. Two-element list, first element is username, second is password.
 
-### <a name="docs-api"> API: `api.py` </a>
+### API
 
 The wrapper for the various functions in this library is provided in `api.py`. These wrappers are called in `demo.py` with `import api`.
 
@@ -99,4 +101,4 @@ The wrapper for the various functions in this library is provided in `api.py`. T
 | `corpus_clean(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_clean` | `None` | Clean a corpus
 | `corpus_normalize(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_normalize` | `None` | Normalize a corpus
 | `svm(path)` | Input path for corpus | `coref.svm.svm_eval` | `None` | SVM to support topic classification of a corpus
-| `get_all()` | None | `server.crawler.book_download_raw_all` | `None` | Download all raw sections of all books
+| `download_all()` | None | `server.crawler.book_download_raw_all` | `None` | Download all raw sections of all books

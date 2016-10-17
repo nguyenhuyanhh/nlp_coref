@@ -48,5 +48,5 @@ def svm(path):
     svm_eval(path)
 
 
-def get_raw():
+def download_all():
     book_download_raw_all()

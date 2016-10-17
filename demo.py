@@ -43,7 +43,7 @@ start_time = time()
 # api.svm(path)
 
 # get all raw books from the server
-# api.get_raw()
+# api.download_all()
 
 end_time = time()
 print('Run time: {} seconds'.format(end_time - start_time))
