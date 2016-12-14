@@ -4,7 +4,7 @@ import random
 import re
 
 from coref.process import Process
-from coref.clean import Clean
+from optionals.clean import Clean
 
 # inits
 p = Process()

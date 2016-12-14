@@ -2,9 +2,9 @@ from time import time
 
 from coref.process import Process
 from coref.corpus import Corpus
-from coref.clean import Clean, known_replacements, remove_non_ascii
-from coref.svm import svm_eval
-from server.crawler import book_download_raw_all
+from optionals.clean import Clean, known_replacements, remove_non_ascii
+from optionals.svm import svm_eval
+from optionals.crawler import book_download_raw_all
 
 # inits
 init_start_time = time()

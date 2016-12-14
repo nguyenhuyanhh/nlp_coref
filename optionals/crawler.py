@@ -9,7 +9,7 @@ from pdf_client.multithread.worker import MultiThreadWorker
 
 # load global config
 cur_dir = os.path.dirname(os.path.realpath(__file__))
-config_file = os.path.join(cur_dir, 'config.json')
+config_file = os.path.join(cur_dir, 'crawler_config.json')
 config.load_from_file(config_file)
 data_dir = os.path.join(os.path.dirname(cur_dir), 'data/')
 

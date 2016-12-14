@@ -2,7 +2,7 @@ import os
 from multiprocessing import Pool, cpu_count
 
 from coref.process import Process
-from coref.clean import Clean
+from optionals.clean import Clean
 
 
 class Corpus:
