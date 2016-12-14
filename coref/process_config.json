@@ -4,5 +4,5 @@
 		"annotators": "tokenize,ssplit,pos,ner,lemma,parse,dcoref",
 		"outputFormat": "json"
 	},
-	"term_model": "dsp_terms.txt"
+	"term_model": ""
 }

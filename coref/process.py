@@ -1,63 +1,75 @@
+"""Coref process."""
+
 import json
+import logging
 import os
 import re
 
 from pycorenlp import StanfordCoreNLP
 
+CUR_DIR = os.path.dirname(os.path.realpath(__file__))
+ROOT_DIR = os.path.dirname(CUR_DIR)
+OPTIONALS_DIR = os.path.join(ROOT_DIR, 'optionals/')
+logging.basicConfig(level=logging.INFO)
+LOG = logging.getLogger(__name__)
+
 
 class Process:
-    # class variables
-    SERVER = None
-    SERVER_URL = None
-    SERVER_PROPS = None
-    TERM_MODEL = None
+    """
+    Class for coref process.
+    Syntax: Process(config_file='process_config.json')
+    """
 
-    # start CoreNLP server, use sample text to initialize all annotators, load
-    # term model
-    def __init__(self, config_file='config.json'):
-        cur_dir = os.path.dirname(os.path.realpath(__file__))
-        config = json.load(open(os.path.join(cur_dir, config_file), 'r'))
-        self.SERVER_URL = config['url']
-        self.SERVER = StanfordCoreNLP(self.SERVER_URL)
-        self.SERVER_PROPS = config['props']
-        if (self.SERVER.annotate('a', properties=self.SERVER_PROPS)):
-            print('CoreNLP initialized')
+    def __init__(self, config_file='process_config.json'):
+        config = json.load(open(os.path.join(CUR_DIR, config_file), 'r'))
+        self.server_url = config['url']
+        self.server = StanfordCoreNLP(self.server_url)
+        self.server_props = config['props']
+        if self.server.annotate('a', properties=self.server_props):
+            LOG.info('CoreNLP initialized')
         else:
-            print('CoreNLP error!')
-        model = dict()
-        with open(os.path.join(cur_dir, config['term_model']), 'r') as model_file:
-            for line in model_file:
-                tmp = line.split(maxsplit=1)  # only split after first space
-                model[tmp[0]] = tmp[1].rstrip('\n')
-        self.TERM_MODEL = model
+            LOG.info('CoreNLP error!')
+        if config['term_model']:
+            model = dict()
+            model_path = os.path.join(OPTIONALS_DIR, config['term_model'])
+            with open(model_path, 'r') as model_file:
+                for line in model_file:
+                    # only split after first space
+                    tmp = line.split(maxsplit=1)
+                    model[tmp[0]] = tmp[1].rstrip('\n')
+            self.term_model = model
 
-    # use the term model
     def replace_terms(self, txt):
+        """Use the term model on txt."""
         result = txt
-        for term in self.TERM_MODEL.keys():
-            find = r'\b{word}\b'.format(word=term)
-            replace = ' {} '.format(self.TERM_MODEL[term])
+        for abbr, full in self.term_model:
+            find = r'\b{word}\b'.format(word=abbr)
+            replace = ' {} '.format(full)
             result = re.sub(find, replace, result)
         return result
 
-    # annotate text and return json
     def annotate_txt(self, txt):
-        return self.SERVER.annotate(txt, properties=self.SERVER_PROPS)
+        """Annotate txt and return json."""
+        return self.server.annotate(txt, properties=self.server_props)
 
-    # pretty-print out just corefs
     def coref_print(self, txt):
+        """Pretty-print out just coreferences from txt."""
         json_out = self.annotate_txt(txt)
         for coref_id in json_out['corefs']:
-            if(len(json_out['corefs'][coref_id]) > 1):
+            if (len(json_out['corefs'][coref_id]) > 1):
                 print('coref chain (id = ' + coref_id + ')')
                 for mention_dict in json_out['corefs'][coref_id]:
                     print('\t\'' + mention_dict['text'] + '\' in sentence ' +
                           str(mention_dict['sentNum']))
 
-    # normalize a given text (string)
-    def normalize(self, txt):
-        # replace terms before doing anything
-        txt = self.replace_terms(txt)
+    def normalize(self, txt, replace_terms=False):
+        """
+        Normalize txt.
+        Find all corefs and replace them with referenced entities.
+        """
+        # replace terms if specified before doing anything
+        if replace_terms:
+            txt = self.replace_terms(txt)
         json_out = self.annotate_txt(txt)
 
         # generate tokens dictionary
@@ -105,17 +117,17 @@ class Process:
         # recreate text, one sentence per line
         # use two special tokens list ("no space following" and "no space
         # preceding")
-        SPECIAL_TOKEN_POST = ['(', '[']
-        SPECIAL_TOKEN_PRE = ["'s", ',', '.', ';', ':',
+        special_token_post = ['(', '[']
+        special_token_pre = ["'s", ',', '.', ';', ':',
                              '?', '!', 'FORMULA', 'FIGURE', ']', ')']
         txt_out_lines = list()
         for sent in tokens.values():
             txt_out_lines.append(' '.join([t for t in sent if t]).strip())
         txt_out = '\n'.join(txt_out_lines)
-        for s_token in SPECIAL_TOKEN_POST:
+        for s_token in special_token_post:
             find = '{} '.format(s_token)
             txt_out = txt_out.replace(find, s_token)
-        for s_token in SPECIAL_TOKEN_PRE:
+        for s_token in special_token_pre:
             find = ' {}'.format(s_token)
             txt_out = txt_out.replace(find, s_token)
         return txt_out

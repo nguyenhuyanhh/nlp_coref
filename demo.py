@@ -6,7 +6,7 @@ import api
 
 cur_dir = os.path.dirname(os.path.realpath(__file__))
 data_dir = os.path.join(cur_dir, 'data/')
-text = open(os.path.join(data_dir, 'input.txt'), 'r').read()
+text = open(os.path.join(data_dir, 'input_sample_1.txt'), 'r').read()
 
 # main program
 start_time = time()

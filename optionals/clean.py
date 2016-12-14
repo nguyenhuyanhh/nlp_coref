@@ -7,7 +7,7 @@ KNOWN_REPLACEMENTS = [
 
 # helper functions
 cur_dir = os.path.dirname(os.path.realpath(__file__))
-with open(os.path.join(cur_dir, 'english_words.txt'), 'r') as word_list_file:
+with open(os.path.join(cur_dir, 'clean_english_words.txt'), 'r') as word_list_file:
     word_list = set(word.strip().lower() for word in word_list_file)
 
 
