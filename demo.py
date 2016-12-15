@@ -1,15 +1,21 @@
-# demo script
+"""demo: Demo script."""
+
+import json
+import logging
 import os
 from time import time
 
 import api
 
-cur_dir = os.path.dirname(os.path.realpath(__file__))
-data_dir = os.path.join(cur_dir, 'data/')
-text = open(os.path.join(data_dir, 'input_sample_1.txt'), 'r').read()
+CUR_DIR = os.path.dirname(os.path.realpath(__file__))
+DATA_DIR = os.path.join(CUR_DIR, 'data/')
+RESULTS_DIR = os.path.join(CUR_DIR, 'results/')
+logging.basicConfig(level=logging.INFO)
+LOG = logging.getLogger(__name__)
+FILE_ID = 'input_sample_1'
+TEXT = open(os.path.join(DATA_DIR, '{}.txt'.format(FILE_ID)), 'r').read()
 
-# main program
-start_time = time()
+START = time()
 
 # clean some text
 # text = api.clean(text)
@@ -19,14 +25,15 @@ start_time = time()
 # text = api.clean_non_ascii(text)
 # print(text)
 
-# annotate some text
-# print(api.annotate(text))
+# annotate some text, pretty-print output
+with open(os.path.join(RESULTS_DIR, '{}.json'.format(FILE_ID)), 'w') as file_:
+    json.dump(api.annotate(TEXT), file_, sort_keys=True, indent=4)
 
 # coref some text
-print(api.coref(text))
+api.coref(TEXT)
 
 # normalize some text
-# print(api.normalize(text))
+print(api.normalize(TEXT))
 
 # clean the corpus
 # path_in = os.path.join(data_dir, 'TDT2_top20/')
@@ -45,5 +52,5 @@ print(api.coref(text))
 # get all raw books from the server
 # api.download_all()
 
-end_time = time()
-print('Run time: {} seconds'.format(end_time - start_time))
+END = time()
+LOG.info('Run time: %s seconds', END - START)
