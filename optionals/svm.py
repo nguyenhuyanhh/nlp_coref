@@ -1,4 +1,6 @@
-# Author: GAO Shengheng
+"""optionals.svm: SVM evaluation
+Author: GAO Shengheng
+"""
 
 import numpy as np
 from sklearn.datasets import load_files
@@ -11,6 +13,7 @@ from sklearn.cross_validation import train_test_split
 
 
 def svm_eval(path):
+    """SVM evaluation of path."""
     print("starting reading")
     all_texts = load_files(path)
     print("finish reading")
