@@ -11,6 +11,9 @@ from pycorenlp import StanfordCoreNLP
 CUR_DIR = os.path.dirname(os.path.realpath(__file__))
 ROOT_DIR = os.path.dirname(CUR_DIR)
 OPTIONALS_DIR = os.path.join(ROOT_DIR, 'optionals/')
+RESULTS_DIR = os.path.join(ROOT_DIR, 'results/')
+if not os.path.exists(RESULTS_DIR):
+    os.makedirs(RESULTS_DIR)
 logging.basicConfig(level=logging.INFO)
 LOG = logging.getLogger(__name__)
 logging.getLogger(
@@ -19,11 +22,12 @@ logging.getLogger(
 
 class Process:
     """
-    Class for coref process.
-    Syntax: Process(config_file='process_config.json')
+    Class for coref process. All results stored in results/{pid}.*
+    Syntax: Process(pid='results', config_file='process_config.json')
     """
 
-    def __init__(self, config_file='process_config.json'):
+    def __init__(self, pid='results', config_file='process_config.json'):
+        self.process_id = pid
         config = json.load(open(os.path.join(CUR_DIR, config_file), 'r'))
         self.server_url = config['url']
         self.server = StanfordCoreNLP(self.server_url)
@@ -42,32 +46,61 @@ class Process:
                     model[tmp[0]] = tmp[1].rstrip('\n')
             self.term_model = model
 
-    def replace_terms(self, txt):
+    def replace_terms(self, txt, file_out=True):
         """Use the term model on txt."""
         for abbr, full in self.term_model:
             find = r'\b{word}\b'.format(word=abbr)
             replace = ' {} '.format(full)
             txt = re.sub(find, replace, txt)
+        if file_out:
+            results_file = os.path.join(
+                RESULTS_DIR, '{}.terms'.format(self.process_id))
+            with open(results_file, 'w') as file_:
+                file_.write(txt)
+            LOG.info('replace_terms: %s.terms written.', self.process_id)
+        LOG.info('replace_terms: Completed.')
         return txt
 
-    def annotate_txt(self, txt):
+    def annotate_txt(self, txt, file_out=True):
         """Annotate txt and return json."""
         # if empty text, return sample empty json
         if txt == '':
-            return {'sentences': [], 'corefs': {}}
-        return self.server.annotate(txt, properties=self.server_props)
+            ret = {'sentences': [], 'corefs': {}}
+        else:
+            ret = self.server.annotate(txt, properties=self.server_props)
+        if file_out:
+            results_file = os.path.join(
+                RESULTS_DIR, '{}.json'.format(self.process_id))
+            with open(results_file, 'w') as file_:
+                json.dump(ret, file_, sort_keys=True, indent=4)
+            LOG.info('annotate_txt: %s.json written.', self.process_id)
+        LOG.info('annotate_txt: Completed.')
+        return ret
 
-    def coref_print(self, txt):
-        """Pretty-print out just coreferences from txt to terminal."""
+    def coref_print(self, txt, terminal_out=False):
+        """Pretty-print out just coreferences from txt."""
         json_out = self.annotate_txt(txt)
-        for coref_id in json_out['corefs']:
-            if len(json_out['corefs'][coref_id]) > 1:
-                print('coref chain (id = {})'.format(coref_id))
-                for mention_dict in json_out['corefs'][coref_id]:
-                    print('\t"{}" in sentence {}'.format(
-                        mention_dict['text'], str(mention_dict['sentNum'])))
+        results_file = os.path.join(
+            RESULTS_DIR, '{}.corefs'.format(self.process_id))
+        if terminal_out:
+            for coref_id in json_out['corefs']:
+                if len(json_out['corefs'][coref_id]) > 1:
+                    print('coref chain (id = {})'.format(coref_id))
+                    for mention_dict in json_out['corefs'][coref_id]:
+                        print('\t"{}" in sentence {}'.format(
+                            mention_dict['text'], mention_dict['sentNum']))
+        else:
+            with open(results_file, 'w') as file_:
+                for coref_id in json_out['corefs']:
+                    if len(json_out['corefs'][coref_id]) > 1:
+                        file_.write('coref chain (id = {})\n'.format(coref_id))
+                        for mention_dict in json_out['corefs'][coref_id]:
+                            file_.write('\t"{}" in sentence {}\n'.format(
+                                mention_dict['text'], mention_dict['sentNum']))
+            LOG.info('coref_print: %s.corefs written.', self.process_id)
+        LOG.info('coref_print: Completed.')
 
-    def normalize(self, txt, replace_terms=False):
+    def normalize(self, txt, replace_terms=False, file_out=True):
         """
         Normalize txt.
         Find all corefs and replace them with referenced entities.
@@ -130,4 +163,17 @@ class Process:
             txt_out_lines.append(
                 ''.join([(token_[0] + token_[1]) for token_ in sentence]))
         txt_out = '\n'.join(txt_out_lines)
+        if file_out:
+            results_file = os.path.join(
+                RESULTS_DIR, '{}.normalized'.format(self.process_id))
+            with open(results_file, 'w') as file_:
+                file_.write(txt_out)
+            LOG.info('normalized: %s.normalized written.', self.process_id)
+        LOG.info('normalized: Completed.')
         return txt_out
+
+    def process(self, txt):
+        """Processing pipeline on txt."""
+        self.coref_print(txt)
+        self.normalize(txt)
+        LOG.info('process: Completed.')

@@ -1,6 +1,5 @@
 """demo: Demo script."""
 
-import json
 import logging
 import os
 from time import time
@@ -25,15 +24,8 @@ START = time()
 # text = api.clean_non_ascii(text)
 # print(text)
 
-# annotate some text, pretty-print output
-with open(os.path.join(RESULTS_DIR, '{}.json'.format(FILE_ID)), 'w') as file_:
-    json.dump(api.annotate(TEXT), file_, sort_keys=True, indent=4)
-
-# coref some text
-api.coref(TEXT)
-
-# normalize some text
-print(api.normalize(TEXT))
+# process some text
+api.process(TEXT)
 
 # clean the corpus
 # path_in = os.path.join(data_dir, 'TDT2_top20/')

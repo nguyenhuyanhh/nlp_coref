@@ -31,19 +31,24 @@ def clean_non_ascii(txt, debug=0):
     return cleaner.clean(txt, debug)
 
 
-def annotate(txt):
+def annotate(txt, file_out=True):
     """coref.process.Process().annotate_txt"""
-    return PROC.annotate_txt(txt)
+    return PROC.annotate_txt(txt, file_out)
 
 
-def coref(txt):
+def coref(txt, terminal_out=False):
     """coref.process.Process().coref_print"""
-    return PROC.coref_print(txt)
+    return PROC.coref_print(txt, terminal_out)
 
 
-def normalize(txt):
+def normalize(txt, replace_terms=False, file_out=True):
     """coref.process.Process().normalize"""
-    return PROC.normalize(txt)
+    return PROC.normalize(txt, replace_terms, file_out)
+
+
+def process(txt):
+    """coref.process.Process().process"""
+    return PROC.process(txt)
 
 
 def corpus_clean(path_in, path_out):

@@ -71,5 +71,5 @@ def normalize_m(process_in_use, root, root_out, file_):
     with open(file_in_path, 'r') as f_in, open(file_out_path, 'w') as f_out:
         text_in = f_in.read()
         LOG.info('read: %s', file_in_path)
-        f_out.write(process_in_use.normalize(text_in))
+        f_out.write(process_in_use.normalize(text_in, file_out=False))
         LOG.info('write: %s', file_out_path)
