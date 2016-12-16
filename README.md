@@ -1,4 +1,4 @@
-# nlp-task
+# nlp_coref
 This library performs certain natural language processing (NLP) tasks, namely coreference resolution of texts, as part of my internship project.
 
 ## Table of Contents
@@ -18,35 +18,59 @@ The project involves processing of domain-specific text in the domain of Digital
 
 ## Requirements
 
-* Windows/ Linux
+* Linux
 * [Python 3](https://www.python.org/downloads/)
-* JDK 8 ([Windows](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)/ [Linux](http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html))
+* [JDK 8](http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html)
 * [Stanford CoreNLP](http://stanfordnlp.github.io/CoreNLP/index.html#download)
 
-This library was developed using Python 3.5.2, JDK 1.8.0_101 and Stanford CoreNLP 3.6.0 running on Lubuntu 16.04.1 LTS. Tested on Windows 10 Insider Preview build 14942.
+This library was developed using Python 3.5.2, JDK 1.8.0_101 and Stanford CoreNLP 3.6.0 running on Lubuntu 16.04.1 LTS.
 
 ## Setup
 
-| Step | Windows | Linux
-| --- | --- | ---
-| 1. Clone the project | |
-| 2. Install Python dependencies | `> python -m pip install -r requirements.txt` | `$ sudo pip3 install -r requirements.txt`
-| 3. Edit [config files](#config-files) (`coref/config.json` and `server/config.json`) | |
-| 4. (Optional, if using the default `coref/config.json`) Run the Stanford CoreNLP local server | `> ./corenlp/corenlp.bat /path/to/corenlp` | `$ ./corenlp/corenlp.sh /path/to/corenlp`
-| 5. Run the demo program | `> python ./demo.py > demo.log` | `$ python3 ./demo.py > demo.log`
+1. Clone the project
+1. Install Python dependencies: `$ sudo pip3 install -r requirements.txt`
+1. Edit [config files](#config-files) (`coref/process_config.json` and optionally, `optionals/crawler_config.json`)
+1. (Optional, if using the default `coref/process_config.json`) Run the Stanford CoreNLP local server: `$ ./corenlp.sh /path/to/corenlp`
+1. Run the demo program: `$ python3 ./demo.py`
 
 ## Documentation
 
 ### Table of Contents
 
+* [Library structure](#library-structure)
 * [Config Files](#config-files)
 * [API](#api)
 
+### Library structure
+
+```
+coref/
+    process.py                  # coref process
+    process_config.json         # config file for coref process
+    corpus.py                   # corpus operations
+optionals/
+    clean.py                    # cleaning library
+    clean_dsp_terms.txt         # DSP term dictionary, optional for coref process
+    clean_english_words.txt     # list of English words, for cleaning library
+    svm.py                      # SVM evaluation of corpus
+    crawler.py                  # PDF server operations
+    crawler_config.json         # config file for PDF server operations
+data/                           # misc data
+results/
+    results.terms               # results file for replace_terms
+    results.json                # results file for annotate_txt
+    results.corefs              # results file for coref_print
+    results.normalized          # results file for normalize
+corenlp.sh                      # script to start local CoreNLP server
+api.py                          # API wrappers
+demo.py                         # demo script
+```
+
 ### Config Files
 
-#### `coref/config.json`
+#### `coref/process_config.json`
 
-This is the config file to set up Stanford CoreNLP and the term model. Default:
+This is the config file to set up Stanford CoreNLP and (optionally) the term model. Default:
 
 ```json
 {
@@ -55,7 +79,7 @@ This is the config file to set up Stanford CoreNLP and the term model. Default:
         "annotators": "tokenize,ssplit,pos,ner,lemma,parse,dcoref",
         "outputFormat": "json"
     },
-    "term_model": "dsp_terms.txt"
+    "term_model": ""
 }
 ```
 
@@ -65,11 +89,11 @@ Attributes:
 | --- | --- | ---
 | `url` | `string` | URL of the CoreNLP server. Default is the local server.
 | `props` | `json` | Properties to be passed into the server. Default is CoreNLP defaults.
-| `term_model` | `string` | Text file containing the term model (abbreviation - normalized form pairs). Default is the hand-picked DSP term model. 
+| `term_model` | `string` | Text file containing the term model (abbreviation - normalized form pairs). Default is none. 
 
-#### `server/config.json`
+#### `optionals/crawler_config.json`
 
-This is the config file to set up pdf-client. More info can be found [here](https://github.com/nathanielove/pdf-client). Default:
+This is the (optional) config file to set up pdf-client. More info can be found [here](https://github.com/nathanielove/pdf-client). Default:
 
 ```json
 {
@@ -93,12 +117,13 @@ The wrapper for the various functions in this library is provided in `api.py`. T
 
 | Wrapper | Argument | Function | Return type | Description
 | --- | --- | --- | --- | ---
-| `clean(txt, debug)` | Text to be cleaned | `coref.clean.Clean().clean` | `string` | Clean text
-| `clean_non_ascii(txt, debug)` | Text to be cleaned | `coref.clean.Clean([...]).clean` | `string` | Clean only non-ASCII characters from text
-| `annotate(txt)` | Text to be annotated | `coref.process.Process().annotate_txt` | `json` | Annotate text using CoreNLP
-| `coref(txt)` | Text to be coreferenced | `coref.process.Process().coref_print` | `None` | Print out coreferences
-| `normalize(txt)` | Text to be normalized | `coref.process.Process().normalize` | `string` | Normalize text
+| `annotate(txt, file_out)` | Text to be annotated | `coref.process.Process().annotate_txt` | `json` | Annotate text using CoreNLP
+| `coref(txt, file_out)` | Text to be coreferenced | `coref.process.Process().coref_print` | `None` | Print out coreferences
+| `normalize(txt, replace_terms, file_out)` | Text to be normalized | `coref.process.Process().normalize` | `string` | Normalize text
+| `process(txt)` | Text to be processed | `coref.process.Process().process` | `string` | Process text (coref and normalize) 
 | `corpus_clean(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_clean` | `None` | Clean a corpus
 | `corpus_normalize(path_in, path_out)` | Input and output path for corpus | `coref.corpus.Corpus().corpus_normalize` | `None` | Normalize a corpus
-| `svm(path)` | Input path for corpus | `coref.svm.svm_eval` | `None` | SVM to support topic classification of a corpus
-| `download_all()` | None | `server.crawler.book_download_raw_all` | `None` | Download all raw sections of all books
+| `clean(txt, debug)` | Text to be cleaned | `optionals.clean.Clean().clean` | `string` | Clean text
+| `clean_non_ascii(txt, debug)` | Text to be cleaned | `optionals.clean.Clean([...]).clean` | `string` | Clean only non-ASCII characters from text
+| `svm(path)` | Input path for corpus | `optionals.svm.svm_eval` | `None` | SVM to support topic classification of a corpus
+| `download_all()` | None | `optionals.crawler.book_download_raw_all` | `None` | Download all raw sections of all books
