@@ -44,15 +44,17 @@ class Process:
 
     def replace_terms(self, txt):
         """Use the term model on txt."""
-        result = txt
         for abbr, full in self.term_model:
             find = r'\b{word}\b'.format(word=abbr)
             replace = ' {} '.format(full)
-            result = re.sub(find, replace, result)
-        return result
+            txt = re.sub(find, replace, txt)
+        return txt
 
     def annotate_txt(self, txt):
         """Annotate txt and return json."""
+        # if empty text, return sample empty json
+        if txt == '':
+            return {'sentences': [], 'corefs': {}}
         return self.server.annotate(txt, properties=self.server_props)
 
     def coref_print(self, txt):
